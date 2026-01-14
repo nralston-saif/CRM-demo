@@ -30,7 +30,7 @@ export default function Navigation() {
 
   const navItems = [
     { name: 'Dashboard', href: '/dashboard' },
-    { name: 'Pipeline', href: '/pipeline' },
+    { name: 'Deals', href: '/pipeline' },
     { name: 'Portfolio', href: '/portfolio' },
   ]
 

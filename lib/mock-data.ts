@@ -1,4 +1,4 @@
-import type { Partner, Application, Vote, Investment, Notification } from './types'
+import type { Partner, Application, Vote, Investment, Notification, Deliberation, DeliberationApplication, ArchivedApplication } from './types'
 
 // Partners (voters)
 export const MOCK_PARTNERS: Partner[] = [
@@ -87,17 +87,17 @@ export const MOCK_APPLICATIONS: Application[] = [
 
 // Pre-existing votes (from other partners)
 export const MOCK_VOTES: Vote[] = [
-  // Votes for NeuralSafe AI (app-1)
-  { id: 'vote-1', application_id: 'app-1', user_id: 'partner-2', vote: 'yes', notes: 'Strong technical founders with deep expertise. Clear problem-solution fit.' },
-  { id: 'vote-2', application_id: 'app-1', user_id: 'partner-3', vote: 'maybe', notes: 'Great team but need to understand GTM strategy better.' },
+  // Votes for NeuralSafe AI (app-1) - 2 votes in, user's vote will reveal all notes!
+  { id: 'vote-1b', application_id: 'app-1', user_id: 'partner-2', vote: 'yes', notes: 'Strong technical founders with deep expertise. Clear problem-solution fit.' },
+  { id: 'vote-1c', application_id: 'app-1', user_id: 'partner-3', vote: 'maybe', notes: 'Great team but need to understand GTM strategy better.' },
 
-  // Votes for AlignmentLabs (app-2)
-  { id: 'vote-3', application_id: 'app-2', user_id: 'partner-2', vote: 'yes', notes: 'Anthropic pedigree is impressive. Solo founder risk but capable.' },
+  // Votes for AlignmentLabs (app-2) - only 1 vote so far
+  { id: 'vote-2a', application_id: 'app-2', user_id: 'partner-2', vote: 'yes', notes: 'Anthropic pedigree is impressive. Solo founder risk but capable.' },
 
   // Votes for SafeRobotics (app-4) - in deliberation
-  { id: 'vote-4', application_id: 'app-4', user_id: 'partner-1', vote: 'yes', notes: 'Unique technical approach to a real problem.' },
-  { id: 'vote-5', application_id: 'app-4', user_id: 'partner-2', vote: 'yes', notes: 'Market timing is right. Strong IP potential.' },
-  { id: 'vote-6', application_id: 'app-4', user_id: 'partner-3', vote: 'maybe', notes: 'Love the tech but worried about enterprise sales cycle.' },
+  { id: 'vote-4a', application_id: 'app-4', user_id: 'partner-1', vote: 'yes', notes: 'Unique technical approach to a real problem.' },
+  { id: 'vote-4b', application_id: 'app-4', user_id: 'partner-2', vote: 'yes', notes: 'Market timing is right. Strong IP potential.' },
+  { id: 'vote-4c', application_id: 'app-4', user_id: 'partner-3', vote: 'maybe', notes: 'Love the tech but worried about enterprise sales cycle.' },
 ]
 
 // Portfolio investments
@@ -280,12 +280,177 @@ export const MOCK_NOTIFICATIONS: Notification[] = [
   },
 ]
 
+// Interview tags
+export const MOCK_INTERVIEW_TAGS = [
+  { name: 'high-priority', color: '#ef4444' },
+  { name: 'follow-up-scheduled', color: '#3b82f6' },
+  { name: 'technical-review', color: '#8b5cf6' },
+  { name: 'reference-check', color: '#f59e0b' },
+  { name: 'term-sheet', color: '#10b981' },
+]
+
+// Deliberation applications (in interview stage)
+export const MOCK_DELIBERATION_APPLICATIONS: DeliberationApplication[] = [
+  {
+    id: 'app-4',
+    company_name: 'SafeRobotics',
+    founder_names: 'Michael Torres',
+    founder_linkedins: 'https://linkedin.com/in/michaeltorres',
+    founder_bios: 'Ex-Boston Dynamics engineer with 10 years in robotics safety systems. Led the safety certification team for Spot.',
+    primary_email: 'michael@saferobotics.tech',
+    company_description: 'Verifiable safety guarantees for autonomous robots. We provide formal verification tools that mathematically prove robots will behave safely in all scenarios. Currently focused on warehouse and manufacturing applications.',
+    website: 'https://saferobotics.tech',
+    previous_funding: 'Pre-seed: $750K',
+    deck_link: 'https://docsend.com/saferobotics-deck',
+    submitted_at: '2024-12-20T11:00:00Z',
+    stage: 'deliberation',
+    votes: [
+      { id: 'vote-4', application_id: 'app-4', user_id: 'partner-1', vote: 'yes', notes: 'Unique technical approach to a real problem.' },
+      { id: 'vote-5', application_id: 'app-4', user_id: 'partner-2', vote: 'yes', notes: 'Market timing is right. Strong IP potential.' },
+      { id: 'vote-6', application_id: 'app-4', user_id: 'partner-3', vote: 'maybe', notes: 'Love the tech but worried about enterprise sales cycle.' },
+    ],
+    deliberation: {
+      id: 'delib-1',
+      application_id: 'app-4',
+      decision: 'pending',
+      status: 'scheduled',
+      tags: ['high-priority', 'technical-review'],
+      meeting_date: '2025-01-15',
+      idea_summary: 'Formal verification for robotics safety - unique approach with strong IP moat.',
+      thoughts: 'Strong technical founder, clear market need. Need to understand GTM better.',
+      created_at: '2024-12-22T10:00:00Z',
+    },
+    email_sent: false,
+    email_sent_at: null,
+  },
+  {
+    id: 'app-6',
+    company_name: 'ContextAI',
+    founder_names: 'Rachel Kim, David Chen',
+    founder_linkedins: 'https://linkedin.com/in/rachelkim, https://linkedin.com/in/davidchen',
+    founder_bios: 'Rachel: Former Google Brain researcher, PhD from MIT in contextual AI. David: Ex-Stripe engineering lead, scaled their ML platform.',
+    primary_email: 'rachel@contextai.dev',
+    company_description: 'Context-aware AI safety guardrails that adapt to different use cases. Our system learns what\'s appropriate in different contexts without requiring explicit rules.',
+    website: 'https://contextai.dev',
+    previous_funding: 'Pre-seed: $400K from angels',
+    deck_link: 'https://docsend.com/contextai-deck',
+    submitted_at: '2024-12-18T09:00:00Z',
+    stage: 'deliberation',
+    votes: [
+      { id: 'vote-7', application_id: 'app-6', user_id: 'partner-1', vote: 'yes', notes: 'Great team, interesting approach.' },
+      { id: 'vote-8', application_id: 'app-6', user_id: 'partner-2', vote: 'yes', notes: 'Novel technology, strong moat.' },
+      { id: 'vote-9', application_id: 'app-6', user_id: 'partner-3', vote: 'yes', notes: 'All yes - schedule interview ASAP.' },
+    ],
+    deliberation: {
+      id: 'delib-2',
+      application_id: 'app-6',
+      decision: 'pending',
+      status: 'met',
+      tags: ['follow-up-scheduled', 'reference-check'],
+      meeting_date: '2025-01-10',
+      idea_summary: 'Contextual safety guardrails - adapts to different use cases automatically.',
+      thoughts: 'Interview went great. Need to check references and discuss terms.',
+      created_at: '2024-12-20T10:00:00Z',
+    },
+    email_sent: true,
+    email_sent_at: '2024-12-19T14:00:00Z',
+  },
+]
+
+// Archived applications (invested or rejected)
+export const MOCK_ARCHIVED_APPLICATIONS: ArchivedApplication[] = [
+  {
+    id: 'app-5',
+    company_name: 'EthicsEngine',
+    founder_names: 'Priya Patel, Omar Hassan',
+    founder_linkedins: 'https://linkedin.com/in/priyapatel, https://linkedin.com/in/omarhassan',
+    founder_bios: 'Priya: Philosophy PhD from Oxford, specialized in AI ethics. Former ethics advisor to Google DeepMind. Omar: ML engineer with experience at Meta AI.',
+    primary_email: 'priya@ethicsengine.ai',
+    company_description: 'Bias detection and ethical AI assessment platform. We help companies ensure their AI systems are fair, transparent, and aligned with ethical principles.',
+    website: 'https://ethicsengine.ai',
+    previous_funding: 'None',
+    deck_link: null,
+    submitted_at: '2024-12-15T16:45:00Z',
+    stage: 'invested',
+    votes: [
+      { id: 'vote-10', application_id: 'app-5', user_id: 'partner-1', vote: 'yes', notes: 'Perfect fit for our thesis.' },
+      { id: 'vote-11', application_id: 'app-5', user_id: 'partner-2', vote: 'yes', notes: 'Strong founders, clear vision.' },
+      { id: 'vote-12', application_id: 'app-5', user_id: 'partner-3', vote: 'yes', notes: 'Unanimous yes!' },
+    ],
+    email_sent: true,
+    email_sent_at: '2024-12-28T10:00:00Z',
+  },
+  {
+    id: 'app-7',
+    company_name: 'DeepGuard',
+    founder_names: 'Alex Thompson',
+    founder_linkedins: 'https://linkedin.com/in/alexthompson',
+    founder_bios: 'Solo founder, ex-AWS security engineer. Built security tools used by Fortune 500 companies.',
+    primary_email: 'alex@deepguard.io',
+    company_description: 'Real-time AI model monitoring for production systems. Detects drift, anomalies, and potential security issues in deployed ML models.',
+    website: 'https://deepguard.io',
+    previous_funding: 'Seed: $800K',
+    deck_link: 'https://docsend.com/deepguard-deck',
+    submitted_at: '2024-11-20T14:00:00Z',
+    stage: 'rejected',
+    votes: [
+      { id: 'vote-13', application_id: 'app-7', user_id: 'partner-1', vote: 'no', notes: 'Crowded market, unclear differentiation.' },
+      { id: 'vote-14', application_id: 'app-7', user_id: 'partner-2', vote: 'maybe', notes: 'Solo founder risk, but interesting tech.' },
+      { id: 'vote-15', application_id: 'app-7', user_id: 'partner-3', vote: 'no', notes: 'Pass - too similar to existing portfolio company.' },
+    ],
+    email_sent: true,
+    email_sent_at: '2024-11-25T09:00:00Z',
+  },
+  {
+    id: 'app-8',
+    company_name: 'ModelShield',
+    founder_names: 'Jennifer Wu, Mark Anderson',
+    founder_linkedins: 'https://linkedin.com/in/jenniferwu, https://linkedin.com/in/markanderson',
+    founder_bios: 'Jennifer: PhD in adversarial ML from Stanford. Mark: Former Palantir engineer.',
+    primary_email: 'jennifer@modelshield.ai',
+    company_description: 'Adversarial attack detection and defense for enterprise AI systems.',
+    website: 'https://modelshield.ai',
+    previous_funding: 'Pre-seed: $500K',
+    deck_link: null,
+    submitted_at: '2024-10-15T11:00:00Z',
+    stage: 'rejected',
+    votes: [
+      { id: 'vote-16', application_id: 'app-8', user_id: 'partner-1', vote: 'maybe', notes: 'Good team but market too early.' },
+      { id: 'vote-17', application_id: 'app-8', user_id: 'partner-2', vote: 'no', notes: 'Enterprise sales cycle too long.' },
+      { id: 'vote-18', application_id: 'app-8', user_id: 'partner-3', vote: 'no', notes: 'Pass.' },
+    ],
+    email_sent: true,
+    email_sent_at: '2024-10-20T10:00:00Z',
+  },
+  {
+    id: 'app-9',
+    company_name: 'TrustLayer AI',
+    founder_names: 'Ryan Chen, Amy Zhou',
+    founder_linkedins: 'https://linkedin.com/in/ryanchen, https://linkedin.com/in/amyzhou',
+    founder_bios: 'Ryan: Ex-OpenAI safety researcher. Amy: Former Stripe ML engineer.',
+    primary_email: 'ryan@trustlayer.ai',
+    company_description: 'Automated AI safety testing infrastructure for enterprises.',
+    website: 'https://trustlayer.ai',
+    previous_funding: 'Pre-seed: $600K',
+    deck_link: 'https://docsend.com/trustlayer-deck',
+    submitted_at: '2024-09-10T15:00:00Z',
+    stage: 'invested',
+    votes: [
+      { id: 'vote-19', application_id: 'app-9', user_id: 'partner-1', vote: 'yes', notes: 'Strong technical founders.' },
+      { id: 'vote-20', application_id: 'app-9', user_id: 'partner-2', vote: 'yes', notes: 'Clear product-market fit.' },
+      { id: 'vote-21', application_id: 'app-9', user_id: 'partner-3', vote: 'yes', notes: 'All in!' },
+    ],
+    email_sent: true,
+    email_sent_at: '2024-09-20T14:00:00Z',
+  },
+]
+
 // Dashboard stats
 export const MOCK_STATS = {
   pipeline: MOCK_APPLICATIONS.filter(a => a.stage === 'new' || a.stage === 'voting').length,
-  deliberation: MOCK_APPLICATIONS.filter(a => a.stage === 'deliberation').length,
+  deliberation: MOCK_DELIBERATION_APPLICATIONS.length,
   invested: MOCK_INVESTMENTS.length,
-  rejected: 12, // Historical
+  rejected: MOCK_ARCHIVED_APPLICATIONS.filter(a => a.stage === 'rejected').length,
 }
 
 // Portfolio stats (computed from investments)

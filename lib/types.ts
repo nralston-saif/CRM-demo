@@ -65,6 +65,31 @@ export interface Notification {
   read: boolean
 }
 
+export interface Deliberation {
+  id: string
+  application_id: string
+  decision: 'pending' | 'yes' | 'no' | 'maybe'
+  status: 'scheduled' | 'met' | 'emailed' | null
+  tags: string[]
+  meeting_date: string | null
+  idea_summary: string | null
+  thoughts: string | null
+  created_at: string
+}
+
+export interface DeliberationApplication extends Application {
+  votes: Vote[]
+  deliberation: Deliberation | null
+  email_sent: boolean
+  email_sent_at: string | null
+}
+
+export interface ArchivedApplication extends Application {
+  votes: Vote[]
+  email_sent: boolean
+  email_sent_at: string | null
+}
+
 export interface Stats {
   pipeline: number
   deliberation: number
