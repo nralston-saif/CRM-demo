@@ -44,7 +44,7 @@ export default function DashboardPage() {
             <p className="font-medium text-purple-900 text-sm sm:text-base">Welcome to the SAIF CRM Demo</p>
             <p className="text-xs sm:text-sm text-purple-700">
               This is a preview of the internal CRM used by SAIF Ventures to manage deal flow.
-              All data shown is simulated.
+              All data shown is fictional.
             </p>
           </div>
         </div>
